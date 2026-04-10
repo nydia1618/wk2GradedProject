@@ -1,0 +1,14 @@
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Visual Studio Code files
+.vscode/
+*.code-workspace
+
+# Build and temporary files (Common for many languages)
+node_modules/
+bin/
+obj/
+*.log
