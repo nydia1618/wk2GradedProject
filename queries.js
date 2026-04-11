@@ -5,19 +5,46 @@ import Answer from "./models/Answer.js";
 import dotenv from "dotenv";
 
 async function query1() {
-  // Write code for Query 1 here
+  const user1 = await User
+      .create({
+        name: "Robin",
+        email: "robin@example.com",
+        password: "hashed_password_7",
+        createdAt: "2025-06-25T10:15:00Z"
+      });
+      console.log(user1);
 }
 
 async function query2() {
-  // Write code for Query 2 here
+  const user2 = await User 
+      .findOne({email: "alice@example.com"});
+  
+  if(!user2){
+    console.log("user with email: alice@example not found");
+    return;
+  } 
+     console.log(user2);
 }
 
 async function query3() {
-  // Write code for Query 3 here
+  const question3 = await Question
+      .findOne({title: "How can I improve the performance of a react app?"});
+   if(!question3)
+    {console.log("There is no question with the title: How can I improve the performance of a react app?");
+    return;  
+    };
+    console.log(question3);
 }
 
 async function query4() {
-  // Write code for Query 4 here
+const question4 = await Question
+      .find({tags:"javascript"});
+      console.log(question4);
+      if(question4.length===0){
+        console.log("There are no questions with tag: javascript");
+        return;
+      }
+      console.log(question4);
 }
 
 async function query5() {
@@ -89,7 +116,7 @@ async function runQueries() {
     1,
     "Create a user with name Robin, email robin@example.com, password hashed_password_7, and createdAt set to 2025-06-25T10:15:00Z",
   );
-  await query1();
+  //await query1();
   printHeader(2, "Fetch the user with email alice@example.com");
   await query2();
   printHeader(
