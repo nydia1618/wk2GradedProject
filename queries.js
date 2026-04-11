@@ -80,19 +80,34 @@ async function query8() {
 }
 
 async function query9() {
-
+const answer9 = await Answer
+      .find({voteCount:{$eq:0}});
+      console.log(answer9);
 }
 
 async function query10() {
-  // Write code for Query 10 here
+ const answer10 = await Answer
+    .find({voteCount:{$gt:0}});
+    console.log(answer10);
 }
 
 async function query11() {
-  // Write code for Query 11 here
-}
+  const user11 = await User
+      .find({createdAt:{$gte:'2023-01-01T00:00:00Z', $lt:'2023-05-01T00:00:00Z'}});
+      console.log(user11);
+    }
 
 async function query12() {
-  // Write code for Query 12 here
+  // const question12 = await Question
+  //     .findOne({title: "How do I set up routing with react router v6?"})
+  //     .populate("author", "name");
+  //     console.log(question12);
+  //     //const 
+  // const answer = await Answer
+  //     .find({questionId:question12._id });
+      
+  //     console.log(answer);
+
 }
 
 async function query13() {
