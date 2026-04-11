@@ -48,15 +48,29 @@ const question4 = await Question
 }
 
 async function query5() {
-  // Write code for Query 5 here
-}
+  const question5 = await Question  
+      .find({createdAt: {$gt:"2023-04-01T00:00:00Z"}});
+    if(question5.length===0)
+    {
+      console.log("There are no questions posted after april 1 2023");
+      return;
+    }
+    console.log(question5);
+  }
 
 async function query6() {
-  // Write code for Query 6 here
+  const question6 = await Question
+    .find({tags:{$in: ["javascript", "react"]}});
+    console.log(question6);
 }
 
 async function query7() {
-  // Write code for Query 7 here
+  const question7 = await Question  
+    .find({});
+  const allTags = question7.flatMap(i => i.tags);
+  const distinctTagArray = [...new Set(allTags)];
+  console.log(distinctTagArray);
+    
 }
 
 async function query8() {
