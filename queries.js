@@ -74,11 +74,13 @@ async function query7() {
 }
 
 async function query8() {
-  // Write code for Query 8 here
+  const question8 = await Question
+      .find({ views: {$gte: 50}});
+      console.log(question8);
 }
 
 async function query9() {
-  // Write code for Query 9 here
+
 }
 
 async function query10() {
