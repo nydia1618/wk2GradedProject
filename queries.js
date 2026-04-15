@@ -32,19 +32,19 @@ async function query3() {
    if(!question3)
     {console.log("There is no question with the title: How can I improve the performance of a react app?");
     return;  
-    };
+    }
     console.log(question3);
 }
 
 async function query4() {
 const question4 = await Question
       .find({tags:"javascript"});
-      console.log(question4);
-      if(question4.length===0){
-        console.log("There are no questions with tag: javascript");
-        return;
-      }
-      console.log(question4);
+        if(question4.length===0){
+            console.log("There are no questions with tag: javascript");
+            return;
+        }
+    console.log(question4);
+
 }
 
 async function query5() {
@@ -98,48 +98,114 @@ async function query11() {
     }
 
 async function query12() {
-  // const question12 = await Question
-  //     .findOne({title: "How do I set up routing with react router v6?"})
-  //     .populate("author", "name");
-  //     console.log(question12);
-  //     //const 
-  // const answer = await Answer
-  //     .find({questionId:question12._id });
-      
-  //     console.log(answer);
+  const question12 = await Question
+      .find({title: "How do I set up routing with react router v6?"});
+      if (question12.length === 0) {
+        console.log("There is no answer to that question");
+        return;
+      }
+      console.log(`There are ${question12.length} answers to that question.`)
+    for (const item of question12) {
+      const answers12 = await Answer
+          .find({questionId: item._id})
+          .populate( 'author','name');
+      for (const answer of answers12) {
+        console.log(`this is one answer:" ${answer.answerText} ", and this is the userid "${answer.author}"`  );
+      }
+    }
 
 }
-
 async function query13() {
-  // Write code for Query 13 here
+  const distinctAnswerAuthors = await Answer
+      .distinct("author");
+  //give me all the users that are not inside the complete list of users
+  const notPostedUsers = await User
+      .find({_id:{$nin:distinctAnswerAuthors}});
+  console.log(notPostedUsers);
+
 }
 
 async function query14() {
-  // Write code for Query 14 here
+  const topquestions = await Question
+      .find({})
+      .sort({voteCount: -1});
+  console.log(topquestions[0]);
+  console.log(topquestions[1]);
+
 }
 
 async function query15() {
-  // Write code for Query 15 here
+  const distinctAnswerAuthors = await Answer
+      .distinct("author");
+  for (const author of distinctAnswerAuthors) {
+    const authorCount = await Answer
+        .find({author: author});
+    console.log(`This user ${author} posted: ${authorCount.length} answers`);
+  }
 }
-
 async function query16() {
-  // Write code for Query 16 here
+
+const result = await Answer
+    .aggregate([
+      {
+        $group:{
+          _id: "$author",
+          answerCount: { $sum: 1}
+        }
+      },
+      {
+        $sort: { answerCount: -1}
+      },
+      {
+        $limit: 2
+      }
+    ]);
+  result.forEach (user =>
+        {
+          console.log(`This user ${user._id} posted: ${user.answerCount} answers`);
+        });
+
 }
 
 async function query17() {
-  // Write code for Query 17 here
+  const question = await Question.findOneAndUpdate(
+          {title: "Why is my async function returning a promise instead of the actual value?"},
+                {$set: {tags: ["javascript", "async"]}},
+                { new: true, }
+
+);
+console.log(question);
+
 }
 
 async function query18() {
-  // Write code for Query 18 here
+  const userUpdate = await User
+      .findOneAndUpdate (
+          { email: "alice@example.com"},
+          {$set: {name: "Alice Smith"}},
+                {new: true}
+      );
+        console.log(userUpdate);
 }
 
 async function query19() {
-  // Write code for Query 19 here
+  const userDelete = await User
+      .findOneAndDelete(
+        { email: "jhonny@example.com"}
+      );
+  console.log(userDelete);
 }
 
 async function query20() {
-  // Write code for Query 20 here
+  const user = await User
+      .findOne({email:"alice@example.com"});
+  if (!user) {
+      console.log("There is no user with that email");
+      return;
+  }
+    const deletedAnswersFromUser = await Answer
+        .deleteMany ({author: user._id});
+    console.log(`Deleted ${deletedAnswersFromUser.deletedCount} answers from user: ${user.email}`);
 }
 
 async function runQueries() {
@@ -147,7 +213,7 @@ async function runQueries() {
     1,
     "Create a user with name Robin, email robin@example.com, password hashed_password_7, and createdAt set to 2025-06-25T10:15:00Z",
   );
-  //await query1();
+  await query1();
   printHeader(2, "Fetch the user with email alice@example.com");
   await query2();
   printHeader(
